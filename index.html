@@ -22,8 +22,9 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://unpkg.com">
+    <!-- Editorial Typography: Fraunces + DM Sans + IBM Plex Mono -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
 
     <!-- Devicon SVG icons loaded directly as images - no font CSS needed -->
@@ -36,6 +37,9 @@
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- Global Interactive Dot Field Canvas (Whole Website Background) -->
+    <canvas id="dot-field-canvas" class="dot-field-canvas"></canvas>
 
     <!-- Terminal Preloader -->
     <div class="preloader" id="preloader">
@@ -100,14 +104,12 @@
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-bg">
-            <div class="hero-gradient-orb hero-orb-1"></div>
-            <div class="hero-gradient-orb hero-orb-2"></div>
-            <div class="hero-gradient-orb hero-orb-3"></div>
             <div class="hero-grid"></div>
         </div>
 
         <div class="hero-content">
             <div class="hero-text">
+                <span class="hero-eyebrow">// FULL STACK MERN DEVELOPER</span>
                 <h1 class="hero-title">
                     <span class="hero-title-line">
                         <span class="hero-title-word">Hi, I'm</span>
@@ -115,12 +117,11 @@
                     </span>
                     <span class="hero-title-line">
                         <span class="hero-title-word">Full Stack</span>
-                        <span class="hero-title-word hero-accent">MERN Developer</span>
+                        <span class="hero-title-word hero-accent">Developer</span>
                     </span>
                 </h1>
                 <p class="hero-description">
-                    I craft scalable web applications with clean code and pixel-perfect interfaces.
-                    Passionate about turning complex problems into elegant solutions.
+                    Building scalable web applications, robust Node.js architectures, and reactive user experiences with pixel-level precision.
                 </p>
                 <div class="hero-actions">
                     <a href="#projects" class="btn btn-primary">
@@ -156,7 +157,7 @@
                 </div>
             </div>
             <div class="hero-image-wrapper">
-                <div class="hero-image-container">
+                <div class="hero-image-container border-beam-wrap">
                     <div class="hero-image-glow"></div>
                     <div class="hero-image-border"></div>
                     <img src="https://ik.imagekit.io/AdnanIdrisi/Portfolio%20Website/tr:w-700,f-auto,q-85/WhatsApp%20Image%202026-09-04%20at%206.11.58%20PM.jpeg" alt="Adnan Idrisi - Full Stack Developer" class="hero-image" width="380" height="460" loading="eager" fetchpriority="high" decoding="async">
@@ -190,66 +191,36 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">// About Me</span>
-                <h2 class="section-title">Turning Ideas Into<br><span class="gradient-text">Digital Reality</span></h2>
+                <h2 class="section-title">Turning Complex Problems Into<br><span class="gradient-text">Clean Digital Systems</span></h2>
             </div>
             <div class="about-content">
                 <div class="about-text">
-                    <p class="about-intro">
-                        I'm a passionate Full Stack Developer specializing in the <strong>MERN stack</strong>,
-                        currently pursuing my degree while building real-world applications that solve meaningful
-                        problems.
+                    <p class="about-lead">
+                        I am a Full Stack Developer specializing in the <strong>MERN stack</strong>, building scalable web applications with clean architecture and reactive user experiences.
                     </p>
-                    <p>
-                        With a strong foundation in <strong>Data Structures & Algorithms</strong> (300+ LeetCode
-                        problems solved),
-                        I combine problem-solving skills with modern web development to deliver high-quality,
-                        scalable applications. My approach focuses on writing clean, maintainable code and
-                        creating intuitive user experiences.
-                    </p>
-                    <p>
-                        When I'm not coding, you'll find me participating in hackathons, contributing to open-source,
-                        or exploring new technologies to stay ahead of the curve.
+                    <p class="about-sub">
+                        With <strong>300+ LeetCode DSA problems</strong> mastered and a <strong>1st place win at Sheryians Hackverse</strong>, I turn complex technical requirements into production-ready software.
                     </p>
                     <div class="about-highlights">
-                        <div class="about-highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                    <path d="M2 17l10 5 10-5" />
-                                    <path d="M2 12l10 5 10-5" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>Full Stack Development</h4>
-                                <p>End-to-end web applications with React & Node.js</p>
+                        <div class="about-highlight spotlight-card">
+                            <span class="highlight-num">01</span>
+                            <div class="highlight-info">
+                                <h4>Full Stack Architecture</h4>
+                                <p>React, Node.js, Express & MongoDB systems</p>
                             </div>
                         </div>
-                        <div class="about-highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>Problem Solver</h4>
-                                <p>300+ DSA problems with consistent daily practice</p>
+                        <div class="about-highlight spotlight-card">
+                            <span class="highlight-num">02</span>
+                            <div class="highlight-info">
+                                <h4>Algorithmic Problem Solving</h4>
+                                <p>300+ solved across Easy, Medium & Hard</p>
                             </div>
                         </div>
-                        <div class="about-highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M6 9H4.5a2.5 2.5 0 010-5C7 4 6 9 6 9zm12 0h1.5a2.5 2.5 0 000-5C17 4 18 9 18 9zm-9 13a4 4 0 008 0" />
-                                    <path d="M12 2v7" />
-                                    <path d="M3 12h18" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>Hackathon Winner</h4>
-                                <p>Award-winning projects built under pressure</p>
+                        <div class="about-highlight spotlight-card">
+                            <span class="highlight-num">03</span>
+                            <div class="highlight-info">
+                                <h4>Sheryians Hackverse Winner</h4>
+                                <p>1st Place winner among hundreds of developers</p>
                             </div>
                         </div>
                     </div>
@@ -271,13 +242,12 @@
   <span class="code-key">"stack"</span>: <span class="code-string">"MERN"</span>,
   <span class="code-key">"education"</span>: <span class="code-string">"B.Tech CSE"</span>,
   <span class="code-key">"leetcode"</span>: <span class="code-number">300</span><span class="code-key">+</span>,
-  <span class="code-key">"hackathons_won"</span>: <span class="code-number">true</span>,
-  <span class="code-key">"passion"</span>: <span class="code-bracket">[</span>
-    <span class="code-string">"Building Products"</span>,
-    <span class="code-string">"Open Source"</span>,
-    <span class="code-string">"Problem Solving"</span>
-  <span class="code-bracket">]</span>,
-  <span class="code-key">"available"</span>: <span class="code-number">true</span>
+  <span class="code-key">"hackathon_winner"</span>: <span class="code-string">"Sheryians Hackverse 1st Place"</span>,
+  <span class="code-key">"focus"</span>: <span class="code-bracket">[</span>
+    <span class="code-string">"Scalable APIs"</span>,
+    <span class="code-string">"System Architecture"</span>,
+    <span class="code-string">"Modern React"</span>
+  <span class="code-bracket">]</span>
 <span class="code-bracket">}</span></code></pre>
                         </div>
                     </div>
@@ -317,7 +287,7 @@
 
             <div class="skills-grid">
                 <!-- Frontend -->
-                <div class="skill-category" data-cat="frontend">
+                <div class="skill-category spotlight-card" data-cat="frontend">
                     <div class="skill-category-header">
                         <div class="category-title-wrap">
                             <span class="category-icon">
@@ -377,7 +347,7 @@
                 </div>
 
                 <!-- Backend -->
-                <div class="skill-category" data-cat="backend">
+                <div class="skill-category spotlight-card" data-cat="backend">
                     <div class="skill-category-header">
                         <div class="category-title-wrap">
                             <span class="category-icon">
@@ -438,7 +408,7 @@
                 </div>
 
                 <!-- Tools & Others -->
-                <div class="skill-category" data-cat="tools">
+                <div class="skill-category spotlight-card" data-cat="tools">
                     <div class="skill-category-header">
                         <div class="category-title-wrap">
                             <span class="category-icon">
@@ -505,35 +475,45 @@
             <div class="section-header">
                 <span class="section-tag">// Portfolio</span>
                 <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-                <p class="section-subtitle">A selection of projects I've built and designed</p>
             </div>
 
             <div class="projects-grid">
                 <!-- Project 1 -->
-                <div class="project-card project-card-featured">
+                <div class="project-card project-card-featured spotlight-card">
+                    <div class="project-card-glare"></div>
                     <div class="project-card-image">
-                        <div class="project-placeholder-img"
-                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)"
-                                stroke-width="1.5">
-                                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                            </svg>
+                        <div class="project-preview-mockup"
+                            style="background: radial-gradient(circle at 80% 20%, rgba(200, 75, 31, 0.18), transparent 50%), linear-gradient(135deg, #181926 0%, #251B38 60%, #151624 100%);">
+                            <div class="project-mockup-header">
+                                <div class="project-mockup-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="project-mockup-tag">SOCKET.IO // WS</span>
+                            </div>
+                            <div class="project-mockup-body">
+                                <div class="project-mockup-icon" style="background: rgba(102, 126, 234, 0.2); border-color: rgba(102, 126, 234, 0.4);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A3B8FF" stroke-width="2">
+                                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                                    </svg>
+                                </div>
+                                <div class="project-mockup-status">
+                                    <span class="mockup-status-pulse"></span>
+                                    <span>Active // 24ms Latency</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="project-card-overlay">
-                            <a href="#" class="project-link" target="_blank" aria-label="View live project">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
+                        <div class="project-action-dock">
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-primary" target="_blank" rel="noopener noreferrer">
+                                <span>Live Demo</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" />
                                 </svg>
                             </a>
-                            <a href="#" class="project-link" target="_blank" aria-label="View source code">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-secondary" target="_blank" rel="noopener noreferrer">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                                 </svg>
+                                <span>Code</span>
                             </a>
                         </div>
                     </div>
@@ -545,38 +525,48 @@
                             <span class="project-tag">Socket.io</span>
                         </div>
                         <h3 class="project-card-title">Real-Time Chat Application</h3>
-                        <p class="project-card-desc">A full-stack messaging platform with real-time communication, group
-                            chats, file sharing, and end-to-end encryption using Socket.io and JWT authentication.</p>
+                        <p class="project-card-desc">Full-stack messaging platform featuring instant socket communication, group channels, and secure JWT authentication.</p>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="project-card">
+                <div class="project-card spotlight-card">
+                    <div class="project-card-glare"></div>
                     <div class="project-card-image">
-                        <div class="project-placeholder-img"
-                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)"
-                                stroke-width="1.5">
-                                <circle cx="9" cy="21" r="1" />
-                                <circle cx="20" cy="21" r="1" />
-                                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
-                            </svg>
+                        <div class="project-preview-mockup"
+                            style="background: radial-gradient(circle at 80% 20%, rgba(240, 80, 50, 0.15), transparent 50%), linear-gradient(135deg, #1b2333 0%, #201a35 60%, #161c28 100%);">
+                            <div class="project-mockup-header">
+                                <div class="project-mockup-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="project-mockup-tag">STRIPE // WEBHOOKS</span>
+                            </div>
+                            <div class="project-mockup-body">
+                                <div class="project-mockup-icon" style="background: rgba(245, 87, 108, 0.2); border-color: rgba(245, 87, 108, 0.4);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF9AA2" stroke-width="2">
+                                        <circle cx="9" cy="21" r="1" />
+                                        <circle cx="20" cy="21" r="1" />
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+                                    </svg>
+                                </div>
+                                <div class="project-mockup-status">
+                                    <span class="mockup-status-pulse"></span>
+                                    <span>Verified // Stripe Checkout</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="project-card-overlay">
-                            <a href="#" class="project-link" target="_blank" aria-label="View live project">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
+                        <div class="project-action-dock">
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-primary" target="_blank" rel="noopener noreferrer">
+                                <span>Live Demo</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" />
                                 </svg>
                             </a>
-                            <a href="#" class="project-link" target="_blank" aria-label="View source code">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-secondary" target="_blank" rel="noopener noreferrer">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                                 </svg>
+                                <span>Code</span>
                             </a>
                         </div>
                     </div>
@@ -588,37 +578,47 @@
                             <span class="project-tag">MongoDB</span>
                         </div>
                         <h3 class="project-card-title">E-Commerce Platform</h3>
-                        <p class="project-card-desc">Full-featured online store with product management, shopping cart,
-                            Stripe payment integration, and an admin dashboard for analytics.</p>
+                        <p class="project-card-desc">Modern online store with dynamic product catalog, shopping cart state, and secure Stripe payment checkout.</p>
                     </div>
                 </div>
 
                 <!-- Project 3 -->
-                <div class="project-card">
+                <div class="project-card spotlight-card">
+                    <div class="project-card-glare"></div>
                     <div class="project-card-image">
-                        <div class="project-placeholder-img"
-                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)"
-                                stroke-width="1.5">
-                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
-                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
-                            </svg>
+                        <div class="project-preview-mockup"
+                            style="background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.14), transparent 50%), linear-gradient(135deg, #112530 0%, #153328 60%, #0d1e26 100%);">
+                            <div class="project-mockup-header">
+                                <div class="project-mockup-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="project-mockup-tag">NEXT.JS 15 // HEADLESS</span>
+                            </div>
+                            <div class="project-mockup-body">
+                                <div class="project-mockup-icon" style="background: rgba(0, 242, 254, 0.18); border-color: rgba(0, 242, 254, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7FEAFF" stroke-width="2">
+                                        <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
+                                        <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+                                    </svg>
+                                </div>
+                                <div class="project-mockup-status">
+                                    <span class="mockup-status-pulse"></span>
+                                    <span>100% Lighthouse SEO</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="project-card-overlay">
-                            <a href="#" class="project-link" target="_blank" aria-label="View live project">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
+                        <div class="project-action-dock">
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-primary" target="_blank" rel="noopener noreferrer">
+                                <span>Live Demo</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" />
                                 </svg>
                             </a>
-                            <a href="#" class="project-link" target="_blank" aria-label="View source code">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-secondary" target="_blank" rel="noopener noreferrer">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                                 </svg>
+                                <span>Code</span>
                             </a>
                         </div>
                     </div>
@@ -629,39 +629,49 @@
                             <span class="project-tag">Cloudinary</span>
                         </div>
                         <h3 class="project-card-title">Blog & CMS Platform</h3>
-                        <p class="project-card-desc">A modern blogging platform with rich text editing, image
-                            optimization, SEO analytics, and a headless CMS for content management.</p>
+                        <p class="project-card-desc">Headless content platform featuring markdown authoring, cloud media optimization, and automated SEO.</p>
                     </div>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="project-card">
+                <div class="project-card spotlight-card">
+                    <div class="project-card-glare"></div>
                     <div class="project-card-image">
-                        <div class="project-placeholder-img"
-                            style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(100,100,100,0.5)"
-                                stroke-width="1.5">
-                                <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                                <circle cx="8.5" cy="7" r="4" />
-                                <line x1="20" y1="8" x2="20" y2="14" />
-                                <line x1="23" y1="11" x2="17" y2="11" />
-                            </svg>
+                        <div class="project-preview-mockup"
+                            style="background: radial-gradient(circle at 80% 20%, rgba(254, 214, 227, 0.15), transparent 50%), linear-gradient(135deg, #2b2318 0%, #301f18 60%, #201a13 100%);">
+                            <div class="project-mockup-header">
+                                <div class="project-mockup-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="project-mockup-tag">FIREBASE // REALTIME</span>
+                            </div>
+                            <div class="project-mockup-body">
+                                <div class="project-mockup-icon" style="background: rgba(254, 214, 227, 0.18); border-color: rgba(254, 214, 227, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFD8B4" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                        <circle cx="8.5" cy="7" r="4" />
+                                        <line x1="20" y1="8" x2="20" y2="14" />
+                                        <line x1="23" y1="11" x2="17" y2="11" />
+                                    </svg>
+                                </div>
+                                <div class="project-mockup-status">
+                                    <span class="mockup-status-pulse"></span>
+                                    <span>Sync // Multi-User Kanban</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="project-card-overlay">
-                            <a href="#" class="project-link" target="_blank" aria-label="View live project">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
+                        <div class="project-action-dock">
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-primary" target="_blank" rel="noopener noreferrer">
+                                <span>Live Demo</span>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" />
                                 </svg>
                             </a>
-                            <a href="#" class="project-link" target="_blank" aria-label="View source code">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                            <a href="https://github.com/AdnanIdrisi" class="dock-btn dock-btn-secondary" target="_blank" rel="noopener noreferrer">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                                 </svg>
+                                <span>Code</span>
                             </a>
                         </div>
                     </div>
@@ -672,8 +682,7 @@
                             <span class="project-tag">Tailwind</span>
                         </div>
                         <h3 class="project-card-title">Team Collaboration Tool</h3>
-                        <p class="project-card-desc">A project management app with Kanban boards, real-time task
-                            updates, team member assignments, and integrated video conferencing.</p>
+                        <p class="project-card-desc">Interactive project workspace with Kanban boards, live task updates, and team collaboration workflows.</p>
                     </div>
                 </div>
             </div>
@@ -690,7 +699,7 @@
 
             <div class="achievements-grid">
                 <!-- LeetCode Card -->
-                <div class="achievement-card achievement-leetcode">
+                <div class="achievement-card achievement-leetcode spotlight-card">
                     <div class="achievement-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5">
@@ -727,7 +736,7 @@
                 </div>
 
                 <!-- Hackathon Card -->
-                <div class="achievement-card achievement-hackathon">
+                <div class="achievement-card achievement-hackathon spotlight-card">
                     <div class="achievement-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5">
@@ -740,9 +749,8 @@
                     </div>
                     <div class="achievement-content">
                         <h3 class="achievement-title-large">Hackverse Winner</h3>
-                        <h4 class="achievement-subtitle">Organized by Sheryians Coding School</h4>
-                        <p class="achievement-desc">Won the hackathon by building an innovative solution under tight
-                            deadlines, competing against hundreds of talented developers.</p>
+                        <h4 class="achievement-subtitle">Sheryians Coding School</h4>
+                        <p class="achievement-desc">Awarded 1st place for architecting an innovative full-stack solution under intense hackathon constraints.</p>
                         <div class="achievement-badge">
                             <span class="trophy-icon">🏆</span>
                             <span>1st Place Winner</span>
@@ -751,19 +759,18 @@
                 </div>
 
                 <!-- Open Source Card -->
-                <div class="achievement-card achievement-oss">
+                <div class="achievement-card achievement-oss spotlight-card">
                     <div class="achievement-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5">
                             <path
-                                d="M15 22v-4a4.8 4.8 0 00-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 004 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                                d="M15 22v-4a4.8 4.8 0 00-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 004 9c0 3.5 3.5 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                             <path d="M9 18c-4.51 2-5-2-7-2" />
                         </svg>
                     </div>
                     <div class="achievement-content">
                         <h3 class="achievement-title-large">Open Source Contributor</h3>
-                        <p class="achievement-desc">Active contributor to open-source projects. Building tools and
-                            libraries that help the developer community grow.</p>
+                        <p class="achievement-desc">Building and maintaining reusable developer tools, modern libraries, and starter kits.</p>
                         <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="achievement-link">
                             View GitHub Profile
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -775,7 +782,7 @@
                 </div>
 
                 <!-- Consistency Card -->
-                <div class="achievement-card achievement-streak">
+                <div class="achievement-card achievement-streak spotlight-card">
                     <div class="achievement-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5">
@@ -783,9 +790,8 @@
                         </svg>
                     </div>
                     <div class="achievement-content">
-                        <h3 class="achievement-title-large">Consistent Coder</h3>
-                        <p class="achievement-desc">Maintaining daily coding streaks on LeetCode and GitHub. Building
-                            the habit of continuous improvement one commit at a time.</p>
+                        <h3 class="achievement-title-large">Daily Coding Streak</h3>
+                        <p class="achievement-desc">Consistent daily engineering practice across LeetCode problem solving and GitHub development.</p>
                         <div class="streak-dots">
                             <span class="streak-dot active"></span>
                             <span class="streak-dot active"></span>
@@ -813,38 +819,34 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">// Journey</span>
-                <h2 class="section-title">Education & <span class="gradient-text">Experience</span></h2>
+                <h2 class="section-title">Education & <span class="gradient-text">Milestones</span></h2>
             </div>
 
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
-                    <div class="timeline-content">
+                    <div class="timeline-content spotlight-card">
                         <span class="timeline-date">2022 — Present</span>
                         <h3 class="timeline-title">B.Tech in Computer Science</h3>
-                        <p class="timeline-org">University Name</p>
-                        <p class="timeline-desc">Pursuing Computer Science Engineering with focus on web technologies,
-                            data structures, algorithms, and software development methodologies.</p>
+                        <p class="timeline-desc">Specializing in Data Structures & Algorithms, database architecture, and full-stack software development.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
-                    <div class="timeline-content">
+                    <div class="timeline-content spotlight-card">
                         <span class="timeline-date">2024</span>
                         <h3 class="timeline-title">Full Stack Web Development</h3>
                         <p class="timeline-org">Sheryians Coding School</p>
-                        <p class="timeline-desc">Intensive full stack development bootcamp covering MERN stack, system
-                            design, deployment, and industry best practices.</p>
+                        <p class="timeline-desc">Deep immersion into production MERN applications, REST APIs, state architectures, and modern cloud deployment.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
-                    <div class="timeline-content">
+                    <div class="timeline-content spotlight-card">
                         <span class="timeline-date">2024</span>
-                        <h3 class="timeline-title">Hackverse Hackathon Winner</h3>
+                        <h3 class="timeline-title">Hackverse Hackathon — 1st Place Winner</h3>
                         <p class="timeline-org">Sheryians Coding School</p>
-                        <p class="timeline-desc">Built an innovative solution in a 24-hour hackathon, demonstrating
-                            rapid prototyping, teamwork, and presentation skills.</p>
+                        <p class="timeline-desc">Secured first place in a high-stakes 24-hour sprint by shipping a full-stack product demo under pressure.</p>
                     </div>
                 </div>
             </div>
@@ -856,9 +858,9 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">// Get In Touch</span>
-                <h2 class="section-title">Let's Build Something<br><span class="gradient-text">Amazing Together</span>
+                <h2 class="section-title">Let's Build Something<br><span class="gradient-text">Remarkable Together</span>
                 </h2>
-                <p class="section-subtitle">Have a project in mind or want to collaborate? I'd love to hear from you.
+                <p class="section-subtitle">Have an opportunity, an ambitious idea, or want to collaborate? I'd love to hear from you.
                 </p>
             </div>
 
@@ -867,12 +869,12 @@
                     <div class="contact-intro-block">
                         <h3 class="contact-col-title">Let's connect & build something impactful.</h3>
                         <p class="contact-col-desc">
-                            Have an idea, want to collaborate, or need a passionate MERN stack developer? Reach out directly or fill out the form, and I'll respond as soon as possible.
+                            Reach out directly via email, connect on LinkedIn, or inspect my repositories on GitHub.
                         </p>
                     </div>
 
                     <div class="contact-cards-stack">
-                        <a href="mailto:mohammadadnanfaiz@gmail.com" class="contact-card">
+                        <a href="mailto:mohammadadnanfaiz@gmail.com" class="contact-card spotlight-card">
                             <div class="contact-card-icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -890,7 +892,7 @@
                             </div>
                         </a>
 
-                        <a href="https://www.linkedin.com/in/adnanidrisi/" target="_blank" rel="noopener noreferrer" class="contact-card">
+                        <a href="https://www.linkedin.com/in/adnanidrisi/" target="_blank" rel="noopener noreferrer" class="contact-card spotlight-card">
                             <div class="contact-card-icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
@@ -909,7 +911,7 @@
                             </div>
                         </a>
 
-                        <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="contact-card">
+                        <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="contact-card spotlight-card">
                             <div class="contact-card-icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />

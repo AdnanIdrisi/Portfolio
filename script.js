@@ -646,6 +646,270 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // ========================================
+    // INTERACTIVE DOT FIELD UI COMPONENT
+    // (Aceternity / Magic UI Inspired - Whole Website)
+    // ========================================
+    const dotCanvas = document.getElementById('dot-field-canvas');
+    if (dotCanvas) {
+        const ctx = dotCanvas.getContext('2d');
+        let width = 0;
+        let height = 0;
+        let dpr = 1;
+        let dots = [];
+        const spacing = window.innerWidth < 768 ? 30 : 26;
+        const interactionRadius = 140;
+        let mouse = { x: -1000, y: -1000, active: false };
+        let isVisible = true;
+        let animFrameId = null;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            dotCanvas.width = width * dpr;
+            dotCanvas.height = height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            initDots();
+        }
+
+        function initDots() {
+            dots = [];
+            const cols = Math.ceil(width / spacing) + 1;
+            const rows = Math.ceil(height / spacing) + 1;
+            const offsetX = (width - (cols - 1) * spacing) / 2;
+            const offsetY = (height - (rows - 1) * spacing) / 2;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    dots.push({
+                        originX: offsetX + c * spacing,
+                        originY: offsetY + r * spacing,
+                        x: offsetX + c * spacing,
+                        y: offsetY + r * spacing,
+                        baseRadius: 1.1,
+                        currentRadius: 1.1,
+                        colorAlpha: 0.16,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+        }
+
+        // Global mouse & touch tracking across the whole window
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.active = true;
+        }, { passive: true });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.active = false;
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+
+        window.addEventListener('blur', () => {
+            mouse.active = false;
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+                mouse.active = true;
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            mouse.active = false;
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+
+        let time = 0;
+        function renderDotField() {
+            if (!isVisible) {
+                animFrameId = requestAnimationFrame(renderDotField);
+                return;
+            }
+
+            ctx.clearRect(0, 0, width, height);
+            time += 0.02;
+
+            const activeDots = [];
+
+            for (let i = 0; i < dots.length; i++) {
+                const dot = dots[i];
+
+                // Subtle ambient idle breathing
+                const ambient = Math.sin(time + dot.phase) * 0.04;
+
+                let factor = 0;
+                if (mouse.active) {
+                    const dx = mouse.x - dot.originX;
+                    const dy = mouse.y - dot.originY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < interactionRadius) {
+                        factor = 1 - (dist / interactionRadius);
+                        factor = factor * factor; // Quadratic easing
+                    }
+                }
+
+                // Spring physics back to origin
+                const targetX = dot.originX + (mouse.active && factor > 0 ? (dot.originX - mouse.x) * 0.12 * factor : 0);
+                const targetY = dot.originY + (mouse.active && factor > 0 ? (dot.originY - mouse.y) * 0.12 * factor : 0);
+                dot.x += (targetX - dot.x) * 0.15;
+                dot.y += (targetY - dot.y) * 0.15;
+
+                // Radius expansion & color transition
+                dot.currentRadius = dot.baseRadius + factor * 1.8;
+                dot.colorAlpha = 0.15 + ambient + factor * 0.75;
+
+                // Draw dot
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dot.currentRadius, 0, Math.PI * 2);
+
+                if (factor > 0.12) {
+                    ctx.fillStyle = `rgba(200, 75, 31, ${Math.min(dot.colorAlpha, 0.9)})`;
+                    activeDots.push(dot);
+                } else {
+                    ctx.fillStyle = `rgba(74, 68, 55, ${Math.min(dot.colorAlpha, 0.32)})`;
+                }
+                ctx.fill();
+            }
+
+            // Draw proximity connection lines between nearby excited dots
+            if (activeDots.length > 1) {
+                ctx.lineWidth = 0.6;
+                const maxLineDist = spacing * 1.6;
+                for (let i = 0; i < activeDots.length; i++) {
+                    for (let j = i + 1; j < activeDots.length; j++) {
+                        const d1 = activeDots[i];
+                        const d2 = activeDots[j];
+                        const ddx = d1.x - d2.x;
+                        const ddy = d1.y - d2.y;
+                        const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+
+                        if (dist < maxLineDist) {
+                            const lineAlpha = (1 - dist / maxLineDist) * 0.32;
+                            ctx.strokeStyle = `rgba(200, 75, 31, ${lineAlpha})`;
+                            ctx.beginPath();
+                            ctx.moveTo(d1.x, d1.y);
+                            ctx.lineTo(d2.x, d2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            animFrameId = requestAnimationFrame(renderDotField);
+        }
+
+        // Throttle rendering when browser tab is inactive to preserve battery & 60fps
+        document.addEventListener('visibilitychange', () => {
+            isVisible = !document.hidden;
+        });
+
+        window.addEventListener('resize', () => {
+            resize();
+        }, { passive: true });
+
+        resize();
+        renderDotField();
+    }
+
+    // ========================================
+    // CARD SPOTLIGHT EFFECT (Aceternity UI)
+    // ========================================
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        }, { passive: true });
+    });
+
+    // ========================================
+    // 3D INTERACTIVE TILT & SPECULAR GLARE
+    // (Raycast / Aceternity 3D Card Effect)
+    // ========================================
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        let isHovered = false;
+        let rafId = null;
+        let targetRotateX = 0;
+        let targetRotateY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        let glareX = 50;
+        let glareY = 50;
+        let currentGlareOpacity = 0;
+
+        function updateCardPhysics() {
+            if (!isHovered && Math.abs(currentRotateX) < 0.05 && Math.abs(currentRotateY) < 0.05) {
+                card.classList.remove('is-tilting');
+                card.style.setProperty('--tilt-x', '0deg');
+                card.style.setProperty('--tilt-y', '0deg');
+                card.style.setProperty('--glare-opacity', '0');
+                rafId = null;
+                return;
+            }
+
+            // Smooth spring lerp
+            currentRotateX += (targetRotateX - currentRotateX) * 0.18;
+            currentRotateY += (targetRotateY - currentRotateY) * 0.18;
+            currentGlareOpacity += ((isHovered ? 0.9 : 0) - currentGlareOpacity) * 0.18;
+
+            card.style.setProperty('--tilt-x', `${currentRotateX.toFixed(2)}deg`);
+            card.style.setProperty('--tilt-y', `${currentRotateY.toFixed(2)}deg`);
+            card.style.setProperty('--glare-x', `${glareX}px`);
+            card.style.setProperty('--glare-y', `${glareY}px`);
+            card.style.setProperty('--glare-opacity', `${currentGlareOpacity.toFixed(2)}`);
+
+            rafId = requestAnimationFrame(updateCardPhysics);
+        }
+
+        card.addEventListener('mouseenter', () => {
+            isHovered = true;
+            card.classList.add('is-tilting');
+            if (!rafId) {
+                rafId = requestAnimationFrame(updateCardPhysics);
+            }
+        });
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            glareX = x;
+            glareY = y;
+
+            const normalizedX = (x / rect.width) - 0.5;
+            const normalizedY = (y / rect.height) - 0.5;
+
+            // Smooth tilt angles
+            targetRotateX = normalizedY * -12;
+            targetRotateY = normalizedX * 12;
+
+            if (!rafId) {
+                rafId = requestAnimationFrame(updateCardPhysics);
+            }
+        }, { passive: true });
+
+        card.addEventListener('mouseleave', () => {
+            isHovered = false;
+            targetRotateX = 0;
+            targetRotateY = 0;
+        });
+    });
 });
 
 // Add spin keyframe for loading animation

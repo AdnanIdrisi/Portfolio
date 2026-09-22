@@ -775,10 +775,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.arc(dot.x, dot.y, dot.currentRadius, 0, Math.PI * 2);
 
                 if (factor > 0.12) {
-                    ctx.fillStyle = `rgba(200, 75, 31, ${Math.min(dot.colorAlpha, 0.9)})`;
+                    ctx.fillStyle = `rgba(62, 0, 12, ${Math.min(dot.colorAlpha, 0.88)})`;
                     activeDots.push(dot);
                 } else {
-                    ctx.fillStyle = `rgba(74, 68, 55, ${Math.min(dot.colorAlpha, 0.32)})`;
+                    ctx.fillStyle = `rgba(62, 0, 12, ${Math.min(dot.colorAlpha, 0.22)})`;
                 }
                 ctx.fill();
             }
@@ -796,8 +796,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         const dist = Math.sqrt(ddx * ddx + ddy * ddy);
 
                         if (dist < maxLineDist) {
-                            const lineAlpha = (1 - dist / maxLineDist) * 0.32;
-                            ctx.strokeStyle = `rgba(200, 75, 31, ${lineAlpha})`;
+                            const lineAlpha = (1 - dist / maxLineDist) * 0.28;
+                            ctx.strokeStyle = `rgba(62, 0, 12, ${lineAlpha})`;
                             ctx.beginPath();
                             ctx.moveTo(d1.x, d1.y);
                             ctx.lineTo(d2.x, d2.y);

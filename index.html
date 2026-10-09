@@ -22,9 +22,9 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://unpkg.com">
-    <!-- Editorial Typography: Fraunces + DM Sans + IBM Plex Mono -->
+    <!-- Ultra-Clean Modern Tech Typography: Plus Jakarta Sans (Headings) + Inter (Body) + JetBrains Mono (Code) -->
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- Devicon SVG icons loaded directly as images - no font CSS needed -->
@@ -34,6 +34,9 @@
 </head>
 
 <body>
+    <!-- Top Scroll Progress Indicator -->
+    <div class="scroll-progress-bar" id="scroll-progress"></div>
+
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-follower" id="cursor-follower"></div>
@@ -50,19 +53,39 @@
                     <span class="dot dot-yellow"></span>
                     <span class="dot dot-green"></span>
                 </div>
-                <div class="terminal-loader-title">adnan@dev-machine: ~ (zsh)</div>
-                <div class="terminal-loader-tag">v2.4.0</div>
+                <div class="terminal-loader-title">adnan@arch: ~/adnan-portfolio (zsh)</div>
+                <div class="terminal-loader-tag">v2.5.0</div>
             </div>
             <div class="terminal-loader-body">
-                <div class="terminal-line"><span class="t-prompt">➜</span> <span class="t-cmd">start --env=production --init</span></div>
-                <div class="terminal-line" id="term-line-1"><span class="t-icon t-ok">✔</span> <span class="t-dim">Booting MERN developer environment...</span></div>
-                <div class="terminal-line" id="term-line-2"><span class="t-icon t-ok">✔</span> <span class="t-dim">Compiling React 19 & GSAP animations...</span></div>
-                <div class="terminal-line" id="term-line-3"><span class="t-icon t-accent">⚡</span> <span class="t-dim">Loaded 24 tech skills & 10+ projects...</span></div>
-                <div class="terminal-line" id="term-line-4"><span class="t-icon t-ready">[READY]</span> <span class="t-highlight">Portfolio initialized. Welcome!</span></div>
-                
-                <div class="terminal-progress-container">
-                    <div class="terminal-progress-bar" id="terminal-progress"></div>
+                <!-- Interactive Command Input with Real Typing -->
+                <div class="terminal-cmd-line">
+                    <span class="t-prompt">➜</span>
+                    <span class="t-path">~/portfolio</span>
+                    <span class="t-git">(main)</span>
+                    <span class="t-typed" id="term-typed-cmd"></span>
+                    <span class="t-cursor" id="term-cursor">█</span>
+                </div>
+
+                <!-- Dynamic Log Lines Output -->
+                <div class="terminal-output" id="term-output"></div>
+
+                <!-- Animated Loading & Progress Bar -->
+                <div class="terminal-progress-container" id="term-progress-wrap" style="display: none;">
+                    <div class="terminal-progress-status">
+                        <span class="t-spinner" id="term-spinner">⠋</span>
+                        <span class="t-progress-label" id="term-progress-label">Compiling modules...</span>
+                    </div>
+                    <div class="terminal-progress-track">
+                        <div class="terminal-progress-bar" id="terminal-progress"></div>
+                    </div>
                     <div class="terminal-progress-text"><span id="terminal-pct">0</span>%</div>
+                </div>
+
+                <!-- Server Ready Line -->
+                <div class="terminal-ready-line" id="term-ready-line" style="display: none;">
+                    <span class="t-ok">✔</span>
+                    <span class="t-ready-text">Compiled successfully in <strong>1,842ms</strong></span>
+                    <span class="t-ready-url">ready on port 3001</span>
                 </div>
             </div>
         </div>
@@ -141,17 +164,23 @@
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <span class="hero-stat-number" data-count="300">0</span><span class="hero-stat-plus">+</span>
+                        <div class="hero-stat-value">
+                            <span class="hero-stat-number" data-count="300">0</span><span class="hero-stat-plus">+</span>
+                        </div>
                         <span class="hero-stat-label">LeetCode Solved</span>
                     </div>
                     <div class="hero-stat-divider"></div>
                     <div class="hero-stat">
-                        <span class="hero-stat-number" data-count="10">0</span><span class="hero-stat-plus">+</span>
+                        <div class="hero-stat-value">
+                            <span class="hero-stat-number" data-count="10">0</span><span class="hero-stat-plus">+</span>
+                        </div>
                         <span class="hero-stat-label">Projects Built</span>
                     </div>
                     <div class="hero-stat-divider"></div>
                     <div class="hero-stat">
-                        <span class="hero-stat-number" data-count="5">0</span><span class="hero-stat-plus">+</span>
+                        <div class="hero-stat-value">
+                            <span class="hero-stat-number" data-count="5">0</span><span class="hero-stat-plus">+</span>
+                        </div>
                         <span class="hero-stat-label">Hackathons</span>
                     </div>
                 </div>
@@ -479,11 +508,10 @@
 
             <div class="projects-grid">
                 <!-- Project 1 -->
-                <div class="project-card project-card-featured spotlight-card">
-                    <div class="project-card-glare"></div>
+                <div class="project-card project-card-featured">
                     <div class="project-card-image">
                         <div class="project-preview-mockup"
-                            style="background: radial-gradient(circle at 80% 20%, rgba(200, 135, 58, 0.22), transparent 50%), linear-gradient(135deg, #3E000C 0%, #290008 60%, #1A0005 100%);">
+                            style="background: radial-gradient(circle at 80% 20%, rgba(190, 183, 164, 0.2), transparent 50%), linear-gradient(135deg, #000000 0%, #151412 60%, #000000 100%);">
                             <div class="project-mockup-header">
                                 <div class="project-mockup-dots">
                                     <span></span><span></span><span></span>
@@ -491,8 +519,8 @@
                                 <span class="project-mockup-tag">SOCKET.IO // WS</span>
                             </div>
                             <div class="project-mockup-body">
-                                <div class="project-mockup-icon" style="background: rgba(255, 236, 209, 0.12); border-color: rgba(255, 236, 209, 0.25);">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFECD1" stroke-width="2">
+                                <div class="project-mockup-icon" style="background: rgba(190, 183, 164, 0.15); border-color: rgba(190, 183, 164, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFC" stroke-width="2">
                                         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                                     </svg>
                                 </div>
@@ -515,6 +543,9 @@
                                 </svg>
                                 <span>Code</span>
                             </a>
+                            <button type="button" class="dock-btn dock-btn-specs" data-project="pulsechat" aria-label="View architecture specs for Real-Time Chat">
+                                <span>Specs ⚡</span>
+                            </button>
                         </div>
                     </div>
                     <div class="project-card-content">
@@ -525,16 +556,15 @@
                             <span class="project-tag">Socket.io</span>
                         </div>
                         <h3 class="project-card-title">Real-Time Chat Application</h3>
-                        <p class="project-card-desc">Full-stack messaging platform featuring instant socket communication, group channels, and secure JWT authentication.</p>
+                        <p class="project-card-desc">Full-stack distributed messaging platform featuring bidirectional socket communication, isolated chat rooms, and persistent message store.</p>
                     </div>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="project-card spotlight-card">
-                    <div class="project-card-glare"></div>
+                <div class="project-card">
                     <div class="project-card-image">
                         <div class="project-preview-mockup"
-                            style="background: radial-gradient(circle at 80% 20%, rgba(200, 135, 58, 0.22), transparent 50%), linear-gradient(135deg, #38000B 0%, #240007 60%, #150004 100%);">
+                            style="background: radial-gradient(circle at 80% 20%, rgba(190, 183, 164, 0.2), transparent 50%), linear-gradient(135deg, #0A0A09 0%, #181714 60%, #000000 100%);">
                             <div class="project-mockup-header">
                                 <div class="project-mockup-dots">
                                     <span></span><span></span><span></span>
@@ -542,8 +572,8 @@
                                 <span class="project-mockup-tag">STRIPE // WEBHOOKS</span>
                             </div>
                             <div class="project-mockup-body">
-                                <div class="project-mockup-icon" style="background: rgba(255, 236, 209, 0.12); border-color: rgba(255, 236, 209, 0.25);">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFD6A5" stroke-width="2">
+                                <div class="project-mockup-icon" style="background: rgba(190, 183, 164, 0.15); border-color: rgba(190, 183, 164, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#BEB7A4" stroke-width="2">
                                         <circle cx="9" cy="21" r="1" />
                                         <circle cx="20" cy="21" r="1" />
                                         <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
@@ -568,6 +598,9 @@
                                 </svg>
                                 <span>Code</span>
                             </a>
+                            <button type="button" class="dock-btn dock-btn-specs" data-project="nexusstore" aria-label="View architecture specs for E-Commerce Platform">
+                                <span>Specs ⚡</span>
+                            </button>
                         </div>
                     </div>
                     <div class="project-card-content">
@@ -578,16 +611,15 @@
                             <span class="project-tag">MongoDB</span>
                         </div>
                         <h3 class="project-card-title">E-Commerce Platform</h3>
-                        <p class="project-card-desc">Modern online store with dynamic product catalog, shopping cart state, and secure Stripe payment checkout.</p>
+                        <p class="project-card-desc">Transactional commerce engine with product catalog, optimistic shopping cart, and idempotent Stripe payment processing.</p>
                     </div>
                 </div>
 
                 <!-- Project 3 -->
-                <div class="project-card spotlight-card">
-                    <div class="project-card-glare"></div>
+                <div class="project-card">
                     <div class="project-card-image">
                         <div class="project-preview-mockup"
-                            style="background: radial-gradient(circle at 80% 20%, rgba(255, 236, 209, 0.16), transparent 50%), linear-gradient(135deg, #300009 0%, #1E0006 60%, #120003 100%);">
+                            style="background: radial-gradient(circle at 80% 20%, rgba(190, 183, 164, 0.2), transparent 50%), linear-gradient(135deg, #000000 0%, #161513 60%, #080807 100%);">
                             <div class="project-mockup-header">
                                 <div class="project-mockup-dots">
                                     <span></span><span></span><span></span>
@@ -595,8 +627,8 @@
                                 <span class="project-mockup-tag">NEXT.JS 15 // HEADLESS</span>
                             </div>
                             <div class="project-mockup-body">
-                                <div class="project-mockup-icon" style="background: rgba(255, 236, 209, 0.12); border-color: rgba(255, 236, 209, 0.25);">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFECD1" stroke-width="2">
+                                <div class="project-mockup-icon" style="background: rgba(190, 183, 164, 0.15); border-color: rgba(190, 183, 164, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFC" stroke-width="2">
                                         <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
                                         <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
                                     </svg>
@@ -620,6 +652,9 @@
                                 </svg>
                                 <span>Code</span>
                             </a>
+                            <button type="button" class="dock-btn dock-btn-specs" data-project="blogcms" aria-label="View architecture specs for Blog CMS">
+                                <span>Specs ⚡</span>
+                            </button>
                         </div>
                     </div>
                     <div class="project-card-content">
@@ -628,17 +663,16 @@
                             <span class="project-tag">MongoDB</span>
                             <span class="project-tag">Cloudinary</span>
                         </div>
-                        <h3 class="project-card-title">Blog & CMS Platform</h3>
-                        <p class="project-card-desc">Headless content platform featuring markdown authoring, cloud media optimization, and automated SEO.</p>
+                        <h3 class="project-card-title">Blog &amp; CMS Platform</h3>
+                        <p class="project-card-desc">Headless editorial platform featuring dynamic markdown authoring, edge CDN media transformation, and automated SEO.</p>
                     </div>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="project-card spotlight-card">
-                    <div class="project-card-glare"></div>
+                <div class="project-card">
                     <div class="project-card-image">
                         <div class="project-preview-mockup"
-                            style="background: radial-gradient(circle at 80% 20%, rgba(200, 135, 58, 0.18), transparent 50%), linear-gradient(135deg, #3A000C 0%, #260008 60%, #160004 100%);">
+                            style="background: radial-gradient(circle at 80% 20%, rgba(190, 183, 164, 0.2), transparent 50%), linear-gradient(135deg, #080807 0%, #171613 60%, #000000 100%);">
                             <div class="project-mockup-header">
                                 <div class="project-mockup-dots">
                                     <span></span><span></span><span></span>
@@ -646,8 +680,8 @@
                                 <span class="project-mockup-tag">FIREBASE // REALTIME</span>
                             </div>
                             <div class="project-mockup-body">
-                                <div class="project-mockup-icon" style="background: rgba(255, 236, 209, 0.12); border-color: rgba(255, 236, 209, 0.25);">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFD8B4" stroke-width="2">
+                                <div class="project-mockup-icon" style="background: rgba(190, 183, 164, 0.15); border-color: rgba(190, 183, 164, 0.35);">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#BEB7A4" stroke-width="2">
                                         <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                                         <circle cx="8.5" cy="7" r="4" />
                                         <line x1="20" y1="8" x2="20" y2="14" />
@@ -673,6 +707,9 @@
                                 </svg>
                                 <span>Code</span>
                             </a>
+                            <button type="button" class="dock-btn dock-btn-specs" data-project="collaboration" aria-label="View architecture specs for Team Collaboration Tool">
+                                <span>Specs ⚡</span>
+                            </button>
                         </div>
                     </div>
                     <div class="project-card-content">
@@ -689,7 +726,7 @@
         </div>
     </section>
 
-    <!-- Achievements Section  -->
+    <!-- Achievements Section -->
     <section class="section achievements" id="achievements">
         <div class="container">
             <div class="section-header">
@@ -697,36 +734,40 @@
                 <h2 class="section-title">Achievements & <span class="gradient-text">Recognition</span></h2>
             </div>
 
-            <div class="achievements-grid">
+            <div class="achievements-grid achievements-column">
                 <!-- LeetCode Card -->
                 <div class="achievement-card achievement-leetcode spotlight-card">
                     <div class="achievement-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
                             <path d="M16 18l6-6-6-6" />
                             <path d="M8 6l-6 6 6 6" />
                         </svg>
                     </div>
                     <div class="achievement-content">
-                        <h3 class="achievement-number">300<span>+</span></h3>
-                        <h4 class="achievement-title">LeetCode Problems Solved</h4>
-                        <p class="achievement-desc">Consistent daily problem solving across Easy, Medium & Hard
-                            difficulties. Focused on DSA mastery.</p>
-                        <div class="leetcode-bar-container">
-                            <div class="leetcode-bar">
-                                <div class="leetcode-bar-fill leetcode-easy" style="width: 45%;">
-                                    <span>Easy</span>
-                                </div>
-                                <div class="leetcode-bar-fill leetcode-medium" style="width: 40%;">
-                                    <span>Medium</span>
-                                </div>
-                                <div class="leetcode-bar-fill leetcode-hard" style="width: 15%;">
-                                    <span>Hard</span>
-                                </div>
+                        <div class="leetcode-header-row">
+                            <div>
+                                <h3 class="achievement-number">300<span>+</span></h3>
+                                <h4 class="achievement-title">LeetCode Problems Solved</h4>
                             </div>
+                            <a href="https://leetcode.com/u/AdnanIdrisi/" target="_blank" rel="noopener noreferrer" class="leetcode-badge-link" aria-label="LeetCode Profile">
+                                <span class="leetcode-handle">@AdnanIdrisi</span>
+                                <span class="leetcode-verified">PRO // TOP 18%</span>
+                            </a>
                         </div>
-                        <a href="https://leetcode.com/u/AdnanIdrisi/" target="_blank" rel="noopener noreferrer" class="achievement-link" style="margin-top: 12px;">
-                            View LeetCode Profile
+                        <p class="achievement-desc">Daily algorithmic problem solving focused on time &amp; space complexity optimization and core computer science fundamentals.</p>
+                        
+                        <!-- Core Topics Chips -->
+                        <div class="leetcode-topics-wrap">
+                            <span class="topic-tag">Binary Trees</span>
+                            <span class="topic-tag">Dynamic Programming</span>
+                            <span class="topic-tag">Graphs &amp; BFS/DFS</span>
+                            <span class="topic-tag">Two Pointers</span>
+                            <span class="topic-tag">Sliding Window</span>
+                        </div>
+
+                        <a href="https://leetcode.com/u/AdnanIdrisi/" target="_blank" rel="noopener noreferrer" class="achievement-link" style="margin-top: 14px;">
+                            <span>Inspect Official Profile on LeetCode</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <path d="M7 17L17 7M17 7H7M17 7V17" />
@@ -738,8 +779,8 @@
                 <!-- Hackathon Card -->
                 <div class="achievement-card achievement-hackathon spotlight-card">
                     <div class="achievement-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
                             <path d="M6 9H4.5a2.5 2.5 0 010-5C7 4 6 9 6 9zm12 0h1.5a2.5 2.5 0 000-5C17 4 18 9 18 9z" />
                             <path d="M4 22h16" />
                             <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22" />
@@ -751,7 +792,7 @@
                         <h3 class="achievement-title-large">Hackverse Winner</h3>
                         <h4 class="achievement-subtitle">Sheryians Coding School</h4>
                         <p class="achievement-desc">Awarded 1st place for architecting an innovative full-stack solution under intense hackathon constraints.</p>
-                        <div class="achievement-badge">
+                        <div class="achievement-badge" style="margin-top: 12px;">
                             <span class="trophy-icon">🏆</span>
                             <span>1st Place Winner</span>
                         </div>
@@ -761,8 +802,8 @@
                 <!-- Open Source Card -->
                 <div class="achievement-card achievement-oss spotlight-card">
                     <div class="achievement-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
                             <path
                                 d="M15 22v-4a4.8 4.8 0 00-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 004 9c0 3.5 3.5 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                             <path d="M9 18c-4.51 2-5-2-7-2" />
@@ -771,8 +812,8 @@
                     <div class="achievement-content">
                         <h3 class="achievement-title-large">Open Source Contributor</h3>
                         <p class="achievement-desc">Building and maintaining reusable developer tools, modern libraries, and starter kits.</p>
-                        <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="achievement-link">
-                            View GitHub Profile
+                        <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="achievement-link" style="margin-top: 12px;">
+                            <span>View GitHub Profile</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <path d="M7 17L17 7M17 7H7M17 7V17" />
@@ -784,15 +825,16 @@
                 <!-- Consistency Card -->
                 <div class="achievement-card achievement-streak spotlight-card">
                     <div class="achievement-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
                             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                         </svg>
                     </div>
                     <div class="achievement-content">
                         <h3 class="achievement-title-large">Daily Coding Streak</h3>
                         <p class="achievement-desc">Consistent daily engineering practice across LeetCode problem solving and GitHub development.</p>
-                        <div class="streak-dots">
+                        <div class="streak-dots" style="margin-top: 14px;">
+                            <span class="streak-dot active"></span>
                             <span class="streak-dot active"></span>
                             <span class="streak-dot active"></span>
                             <span class="streak-dot active"></span>
@@ -1010,6 +1052,62 @@
             </div>
         </div>
     </footer>
+
+    <!-- Architecture Case Study Modal -->
+    <div class="project-modal" id="project-modal" role="dialog" aria-modal="true" aria-hidden="true" data-lenis-prevent>
+        <div class="project-modal-backdrop" id="modal-backdrop"></div>
+        <div class="project-modal-dialog" data-lenis-prevent>
+            <button type="button" class="project-modal-close" id="modal-close" aria-label="Close architecture modal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="project-modal-header">
+                <span class="modal-tag" id="modal-tag">ARCHITECTURE SPEC // CASE STUDY</span>
+                <h3 class="modal-title" id="modal-title">Project Architecture</h3>
+            </div>
+            <div class="project-modal-body">
+                <div class="modal-diagram-box">
+                    <div class="modal-diagram-header">
+                        <span class="diag-dot"></span>
+                        <span class="diag-title">SYSTEM FLOW &amp; DATA PIPELINE</span>
+                    </div>
+                    <div class="modal-diagram-flow" id="modal-diagram-flow">
+                        <!-- Injected by script.js -->
+                    </div>
+                </div>
+                <div class="modal-specs-grid">
+                    <div class="modal-spec-card">
+                        <h4 class="spec-heading">Engineering Highlights</h4>
+                        <ul class="spec-list" id="modal-highlights">
+                            <!-- Injected by script.js -->
+                        </ul>
+                    </div>
+                    <div class="modal-spec-card">
+                        <h4 class="spec-heading">Tech Stack &amp; Infrastructure</h4>
+                        <div class="modal-tags" id="modal-stack-tags">
+                            <!-- Injected by script.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-modal-footer">
+                <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="modal-code-link">
+                    <span>View GitHub Source</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                    </svg>
+                </a>
+                <a href="https://github.com/AdnanIdrisi" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="modal-live-link">
+                    <span>Open Live Demo</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

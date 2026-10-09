@@ -48,39 +48,146 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Terminal boot sequence (snappy & high performance)
+    // Terminal boot sequence with real typing, spinner, and loading progress
     function runTerminalLoader() {
-        const line1 = document.getElementById('term-line-1');
-        const line2 = document.getElementById('term-line-2');
-        const line3 = document.getElementById('term-line-3');
-        const line4 = document.getElementById('term-line-4');
+        const typedCmd = document.getElementById('term-typed-cmd');
+        const cursor = document.getElementById('term-cursor');
+        const output = document.getElementById('term-output');
+        const progressWrap = document.getElementById('term-progress-wrap');
         const progressBar = document.getElementById('terminal-progress');
         const progressPct = document.getElementById('terminal-pct');
+        const progressLabel = document.getElementById('term-progress-label');
+        const spinner = document.getElementById('term-spinner');
+        const readyLine = document.getElementById('term-ready-line');
 
-        if (!line1) {
+        if (!typedCmd || !output) {
             setTimeout(startApp, 200);
             return;
         }
 
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress = Math.min(progress + Math.floor(Math.random() * 15) + 18, 100);
-            if (progressBar) progressBar.style.setProperty('--progress-width', `${progress}%`);
-            if (progressPct) progressPct.textContent = progress;
-
-            if (progress >= 100) {
-                clearInterval(progressInterval);
-                setTimeout(startApp, 120);
+        // Allow skipping preloader on click or escape key
+        if (preloader) {
+            preloader.addEventListener('click', () => startApp());
+        }
+        window.addEventListener('keydown', function onKey(e) {
+            if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+                window.removeEventListener('keydown', onKey);
+                startApp();
             }
-        }, 50);
+        });
 
-        setTimeout(() => { if (line1) line1.classList.add('show'); }, 60);
-        setTimeout(() => { if (line2) line2.classList.add('show'); }, 180);
-        setTimeout(() => { if (line3) line3.classList.add('show'); }, 300);
-        setTimeout(() => { if (line4) line4.classList.add('show'); }, 420);
+        // 1. Real typing animation (fast & snappy developer cadence)
+        const commandText = 'pnpm run dev';
+        let charIdx = 0;
 
-        // Fail-safe maximum timeout
-        setTimeout(startApp, 900);
+        function typeNextChar() {
+            if (animationsInitialized) return;
+            if (charIdx < commandText.length) {
+                typedCmd.textContent += commandText.charAt(charIdx);
+                charIdx++;
+                const delay = 22 + Math.random() * 28;
+                setTimeout(typeNextChar, delay);
+            } else {
+                setTimeout(startLogStream, 130);
+            }
+        }
+
+        // 2. Stream terminal logs
+        const logs = [
+            { tag: 'ok', tagText: 'READY', text: 'V8 runtime & Node.js environment online' },
+            { tag: 'info', tagText: 'SYSTEM', text: 'Loaded MERN architecture & 300+ algorithms' },
+            { tag: 'build', tagText: 'BUILD', text: 'Compiling React 19 UI & GSAP shaders...' }
+        ];
+
+        function startLogStream() {
+            if (animationsInitialized) return;
+            let logIdx = 0;
+
+            function outputNextLog() {
+                if (animationsInitialized) return;
+                if (logIdx < logs.length) {
+                    const item = logs[logIdx];
+                    const row = document.createElement('div');
+                    row.className = 'terminal-log-row';
+                    row.innerHTML = `<span class="t-tag ${item.tag}">[${item.tagText}]</span> <span class="t-log-msg">${item.text}</span>`;
+                    output.appendChild(row);
+
+                    requestAnimationFrame(() => {
+                        row.classList.add('show');
+                    });
+
+                    logIdx++;
+                    setTimeout(outputNextLog, 140);
+                } else {
+                    setTimeout(startProgressBar, 110);
+                }
+            }
+
+            outputNextLog();
+        }
+
+        // 3. Spinner & Progress Loading Animation
+        function startProgressBar() {
+            if (animationsInitialized) return;
+            if (progressWrap) progressWrap.style.display = 'flex';
+
+            const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+            let spinnerIdx = 0;
+            const spinnerInterval = setInterval(() => {
+                if (animationsInitialized) {
+                    clearInterval(spinnerInterval);
+                    return;
+                }
+                spinnerIdx = (spinnerIdx + 1) % spinnerFrames.length;
+                if (spinner) spinner.textContent = spinnerFrames[spinnerIdx];
+            }, 60);
+
+            let currentProgress = 0;
+            const progressSteps = [
+                { threshold: 35, label: 'Bundling client modules...' },
+                { threshold: 75, label: 'Optimizing interactive shaders...' },
+                { threshold: 95, label: 'Verifying production build...' },
+                { threshold: 100, label: 'Portfolio ready!' }
+            ];
+
+            const progressInterval = setInterval(() => {
+                if (animationsInitialized) {
+                    clearInterval(progressInterval);
+                    clearInterval(spinnerInterval);
+                    return;
+                }
+
+                const increment = Math.floor(Math.random() * 8) + 6;
+                currentProgress = Math.min(currentProgress + increment, 100);
+
+                if (progressBar) progressBar.style.width = `${currentProgress}%`;
+                if (progressPct) progressPct.textContent = currentProgress;
+
+                for (let i = 0; i < progressSteps.length; i++) {
+                    if (currentProgress <= progressSteps[i].threshold) {
+                        if (progressLabel) progressLabel.textContent = progressSteps[i].label;
+                        break;
+                    }
+                }
+
+                if (currentProgress >= 100) {
+                    clearInterval(progressInterval);
+                    clearInterval(spinnerInterval);
+                    if (spinner) spinner.textContent = '✔';
+
+                    setTimeout(() => {
+                        if (readyLine) readyLine.style.display = 'flex';
+                        setTimeout(startApp, 260);
+                    }, 110);
+                }
+            }, 38);
+        }
+
+        // Start typing sequence
+        setTimeout(typeNextChar, 100);
+
+        // Fail-safe maximum timeout (4s)
+        setTimeout(startApp, 4000);
     }
 
     runTerminalLoader();
@@ -397,7 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 y: 60,
                 duration: 0.8,
                 delay: i * 0.1,
-                ease: 'power3.out'
+                ease: 'power3.out',
+                clearProps: 'transform'
             });
         });
 
@@ -619,33 +727,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial check
     handleScrollUpdates();
 
-    // ========================================
-    // TILT EFFECT ON PROJECT CARDS (RAF Optimized)
-    // ========================================
-    if (window.innerWidth > 768) {
-        document.querySelectorAll('.project-card').forEach(card => {
-            let tiltRafId = null;
-            card.addEventListener('mousemove', (e) => {
-                if (tiltRafId) cancelAnimationFrame(tiltRafId);
-                tiltRafId = requestAnimationFrame(() => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 20;
-                    const rotateY = (centerX - x) / 20;
-
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-                });
-            }, { passive: true });
-
-            card.addEventListener('mouseleave', () => {
-                if (tiltRafId) cancelAnimationFrame(tiltRafId);
-                card.style.transform = '';
-            });
-        });
-    }
 
     // ========================================
     // INTERACTIVE DOT FIELD UI COMPONENT
@@ -775,10 +856,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.arc(dot.x, dot.y, dot.currentRadius, 0, Math.PI * 2);
 
                 if (factor > 0.12) {
-                    ctx.fillStyle = `rgba(62, 0, 12, ${Math.min(dot.colorAlpha, 0.88)})`;
+                    ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(dot.colorAlpha, 0.9)})`;
                     activeDots.push(dot);
                 } else {
-                    ctx.fillStyle = `rgba(62, 0, 12, ${Math.min(dot.colorAlpha, 0.22)})`;
+                    ctx.fillStyle = `rgba(190, 183, 164, ${Math.min(dot.colorAlpha, 0.4)})`;
                 }
                 ctx.fill();
             }
@@ -796,8 +877,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         const dist = Math.sqrt(ddx * ddx + ddy * ddy);
 
                         if (dist < maxLineDist) {
-                            const lineAlpha = (1 - dist / maxLineDist) * 0.28;
-                            ctx.strokeStyle = `rgba(62, 0, 12, ${lineAlpha})`;
+                            const lineAlpha = (1 - dist / maxLineDist) * 0.45;
+                            ctx.strokeStyle = `rgba(190, 183, 164, ${lineAlpha})`;
                             ctx.beginPath();
                             ctx.moveTo(d1.x, d1.y);
                             ctx.lineTo(d2.x, d2.y);
@@ -836,79 +917,226 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     });
 
+
     // ========================================
-    // 3D INTERACTIVE TILT & SPECULAR GLARE
-    // (Raycast / Aceternity 3D Card Effect)
+    // TOP SCROLL PROGRESS INDICATOR
     // ========================================
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        let isHovered = false;
-        let rafId = null;
-        let targetRotateX = 0;
-        let targetRotateY = 0;
-        let currentRotateX = 0;
-        let currentRotateY = 0;
-        let glareX = 50;
-        let glareY = 50;
-        let currentGlareOpacity = 0;
-
-        function updateCardPhysics() {
-            if (!isHovered && Math.abs(currentRotateX) < 0.05 && Math.abs(currentRotateY) < 0.05) {
-                card.classList.remove('is-tilting');
-                card.style.setProperty('--tilt-x', '0deg');
-                card.style.setProperty('--tilt-y', '0deg');
-                card.style.setProperty('--glare-opacity', '0');
-                rafId = null;
-                return;
-            }
-
-            // Smooth spring lerp
-            currentRotateX += (targetRotateX - currentRotateX) * 0.18;
-            currentRotateY += (targetRotateY - currentRotateY) * 0.18;
-            currentGlareOpacity += ((isHovered ? 0.9 : 0) - currentGlareOpacity) * 0.18;
-
-            card.style.setProperty('--tilt-x', `${currentRotateX.toFixed(2)}deg`);
-            card.style.setProperty('--tilt-y', `${currentRotateY.toFixed(2)}deg`);
-            card.style.setProperty('--glare-x', `${glareX}px`);
-            card.style.setProperty('--glare-y', `${glareY}px`);
-            card.style.setProperty('--glare-opacity', `${currentGlareOpacity.toFixed(2)}`);
-
-            rafId = requestAnimationFrame(updateCardPhysics);
-        }
-
-        card.addEventListener('mouseenter', () => {
-            isHovered = true;
-            card.classList.add('is-tilting');
-            if (!rafId) {
-                rafId = requestAnimationFrame(updateCardPhysics);
-            }
-        });
-
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            glareX = x;
-            glareY = y;
-
-            const normalizedX = (x / rect.width) - 0.5;
-            const normalizedY = (y / rect.height) - 0.5;
-
-            // Smooth tilt angles
-            targetRotateX = normalizedY * -12;
-            targetRotateY = normalizedX * 12;
-
-            if (!rafId) {
-                rafId = requestAnimationFrame(updateCardPhysics);
-            }
+    const scrollProgressBar = document.getElementById('scroll-progress');
+    if (scrollProgressBar) {
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressBar.style.width = `${progress}%`;
         }, { passive: true });
+    }
 
-        card.addEventListener('mouseleave', () => {
-            isHovered = false;
-            targetRotateX = 0;
-            targetRotateY = 0;
+    // ========================================
+    // TACTILE COPY EMAIL WITH FEEDBACK
+    // ========================================
+    const copyEmailBtns = document.querySelectorAll('.btn-copy-email');
+    copyEmailBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const email = btn.getAttribute('data-email') || 'mohammadadnanfaiz@gmail.com';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(() => {
+                    const badge = btn.querySelector('.copy-badge');
+                    const prevBadge = badge ? badge.textContent : '';
+                    if (badge) badge.textContent = 'Copied! ✓';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        if (badge) badge.textContent = prevBadge || 'Copy';
+                        btn.classList.remove('copied');
+                    }, 2200);
+                }).catch(() => {
+                    prompt('Copy email address:', email);
+                });
+            } else {
+                prompt('Copy email address:', email);
+            }
         });
+    });
+
+    // ========================================
+    // ARCHITECTURE CASE STUDY MODAL
+    // ========================================
+    const projectModal = document.getElementById('project-modal');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalClose = document.getElementById('modal-close');
+    const modalTag = document.getElementById('modal-tag');
+    const modalTitle = document.getElementById('modal-title');
+    const modalFlow = document.getElementById('modal-diagram-flow');
+    const modalHighlights = document.getElementById('modal-highlights');
+    const modalStackTags = document.getElementById('modal-stack-tags');
+    const modalCodeLink = document.getElementById('modal-code-link');
+    const modalLiveLink = document.getElementById('modal-live-link');
+
+    const projectData = {
+        pulsechat: {
+            tag: 'SOCKET.IO // DISTRIBUTED WEBSOCKETS',
+            title: 'Real-Time Chat — Distributed WebSocket Architecture',
+            nodes: [
+                { title: 'Client', sub: 'React 19 / State' },
+                { title: 'Gateway', sub: 'Socket.io Cluster' },
+                { title: 'Broker', sub: 'Redis Pub/Sub' },
+                { title: 'Database', sub: 'MongoDB Shards' }
+            ],
+            highlights: [
+                'Sub-24ms bidirectional WebSocket communication with automated reconnection protocols',
+                'Horizontal scaling via Redis Pub/Sub channels broadcasting across multi-core Node.js servers',
+                'Dual-token JWT authentication with silent rotation stored in HTTP-only SameSite cookies',
+                'Optimistic UI message queuing and client-side acknowledgment reconciliation'
+            ],
+            stack: ['React 19', 'Node.js', 'Socket.io', 'Redis', 'MongoDB', 'JWT', 'Docker'],
+            code: 'https://github.com/AdnanIdrisi',
+            live: 'https://github.com/AdnanIdrisi'
+        },
+        nexusstore: {
+            tag: 'STRIPE WEBHOOKS // ACID TRANSACTIONS',
+            title: 'NexusStore — High-Concurrency E-Commerce Engine',
+            nodes: [
+                { title: 'Client', sub: 'React / Redux' },
+                { title: 'API Layer', sub: 'Express REST' },
+                { title: 'Stripe', sub: 'Webhook Gateway' },
+                { title: 'ACID Store', sub: 'MongoDB Sessions' }
+            ],
+            highlights: [
+                'Two-phase commit inventory locks ensuring zero overselling under flash sales',
+                'Idempotent Stripe webhook listeners preventing duplicate charges or state corruption',
+                'Optimistic cart synchronization with local resilience and background server reconciliation',
+                'Strict RBAC middleware guarding product lifecycle and financial analytics routes'
+            ],
+            stack: ['React', 'Node.js', 'Express', 'Stripe API', 'MongoDB', 'Redux Toolkit'],
+            code: 'https://github.com/AdnanIdrisi',
+            live: 'https://github.com/AdnanIdrisi'
+        },
+        blogcms: {
+            tag: 'NEXT.JS 15 // EDGE ISR RENDERING',
+            title: 'Headless CMS — High-Performance Editorial Platform',
+            nodes: [
+                { title: 'Studio', sub: 'Markdown AST' },
+                { title: 'Next.js 15', sub: 'App Router ISR' },
+                { title: 'Edge CDN', sub: 'Sub-50ms TTFB' },
+                { title: 'Cloudinary', sub: 'AVIF/WebP Media' }
+            ],
+            highlights: [
+                'Incremental Static Regeneration (ISR) delivering instant page loads with on-demand purge',
+                'Automated OpenGraph visual generation and schema.org JSON-LD for 100/100 Lighthouse SEO',
+                'High-speed Markdown compiler supporting code block syntax highlighting and reading time analysis',
+                'Cloudinary transform pipeline generating adaptive responsive images based on client DPI'
+            ],
+            stack: ['Next.js 15', 'TypeScript', 'MongoDB Atlas', 'Cloudinary', 'TailwindCSS'],
+            code: 'https://github.com/AdnanIdrisi',
+            live: 'https://github.com/AdnanIdrisi'
+        },
+        collaboration: {
+            tag: 'FIREBASE // REALTIME COLLABORATION',
+            title: 'Team Collaboration — Real-Time Kanban Suite',
+            nodes: [
+                { title: 'Collaborator', sub: 'React Kanban' },
+                { title: 'Realtime DB', sub: 'Event Stream' },
+                { title: 'Cloud Fns', sub: 'Task Workers' },
+                { title: 'Presence', sub: 'Active Avatars' }
+            ],
+            highlights: [
+                'Zero-latency drag-and-drop state dispatch with optimistic UI task reordering',
+                'Real-time multi-tenant presence indicators showing currently active teammates in columns',
+                'Granular Firestore security rules enforcing complete workspace data isolation',
+                'Event-driven serverless functions triggering automated task assignment notifications'
+            ],
+            stack: ['React', 'Firebase', 'TailwindCSS', 'Framer Motion', 'WebSockets'],
+            code: 'https://github.com/AdnanIdrisi',
+            live: 'https://github.com/AdnanIdrisi'
+        }
+    };
+
+    function openProjectModal(key) {
+        const data = projectData[key];
+        if (!data || !projectModal) return;
+
+        modalTag.textContent = data.tag;
+        modalTitle.textContent = data.title;
+        modalCodeLink.href = data.code;
+        modalLiveLink.href = data.live;
+
+        // Render flow nodes
+        modalFlow.innerHTML = '';
+        data.nodes.forEach((node, i) => {
+            const nodeEl = document.createElement('div');
+            nodeEl.className = 'flow-node';
+            nodeEl.innerHTML = `<span class="flow-node-title">${node.title}</span><span class="flow-node-sub">${node.sub}</span>`;
+            modalFlow.appendChild(nodeEl);
+
+            if (i < data.nodes.length - 1) {
+                const arrowEl = document.createElement('span');
+                arrowEl.className = 'flow-arrow';
+                arrowEl.textContent = '→';
+                modalFlow.appendChild(arrowEl);
+            }
+        });
+
+        // Render highlights
+        modalHighlights.innerHTML = '';
+        data.highlights.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            modalHighlights.appendChild(li);
+        });
+
+        // Render tech tags
+        modalStackTags.innerHTML = '';
+        data.stack.forEach(tech => {
+            const chip = document.createElement('span');
+            chip.className = 'modal-tag-chip';
+            chip.textContent = tech;
+            modalStackTags.appendChild(chip);
+        });
+
+        projectModal.classList.add('active');
+        projectModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        if (typeof lenis !== 'undefined' && lenis) {
+            lenis.stop();
+        }
+    }
+
+    function closeProjectModal() {
+        if (!projectModal) return;
+        projectModal.classList.remove('active');
+        projectModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        if (typeof lenis !== 'undefined' && lenis) {
+            lenis.start();
+        }
+    }
+
+    const modalDialog = document.querySelector('.project-modal-dialog');
+    if (modalDialog) {
+        modalDialog.addEventListener('wheel', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+        modalDialog.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+    }
+
+    document.querySelectorAll('.dock-btn-specs').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const projectKey = btn.getAttribute('data-project');
+            openProjectModal(projectKey);
+        });
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeProjectModal);
+    if (modalBackdrop) modalBackdrop.addEventListener('click', closeProjectModal);
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && projectModal && projectModal.classList.contains('active')) {
+            closeProjectModal();
+        }
     });
 });
 
